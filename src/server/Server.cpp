@@ -3,6 +3,13 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <arpa/inet.h>
 #include <stdlib.h>
-#include <unistd.h>
+
+
+int main(int argc, char *argv[]){
+
+    struct sockaddr_in serv_addr;
+    struct hostent *server;
+
+    return 0;
+};
