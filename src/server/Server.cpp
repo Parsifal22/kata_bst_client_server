@@ -1,9 +1,4 @@
-#include <iostream>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <stdlib.h>
+#include "Top_file.h"
 
 
 int main(int argc, char *argv[]){
