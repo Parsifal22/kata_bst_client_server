@@ -1,5 +1,5 @@
-#include "Top_file.h"
-//struct hostent *server;
+#include "../Top_file.h"
+
 
 int main(int argc, char *argv[]){
 

@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <netdb.h>
 
 
 ///FUNCTIONS///
