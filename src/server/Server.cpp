@@ -13,7 +13,7 @@ int main(int argc, char *argv[]){
     int sockfd;
     int newsockfd;
     int portno;
-
+    int msg;
     char buffer[255];
 
     struct sockaddr_in serv_addr;
@@ -38,7 +38,44 @@ int main(int argc, char *argv[]){
         error("Binding Failed.");
     }
     
+    listen(sockfd, 2);
+    clilen = sizeof(cli_addr);
 
+    newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);
+
+    if(newsockfd < 0){
+        error("Error on Accept");
+    }
+
+    while(1){
+
+        bzero(buffer, 255);
+        msg = read(newsockfd, buffer, 255);
+        if (msg < 0){
+            error("Error on reading.");
+        }
+
+        std::cout << "Client : " << buffer << std::endl;
+
+        bzero(buffer, 255);
+        fgets(buffer, 255, stdin);
+
+        msg = write(newsockfd, buffer, strlen(buffer));
+
+        if(msg < 0){
+            error("Error on Writing.");
+        }
+
+        int i = strncmp("Bye", buffer, 3);
+
+        if(i == 0){
+            break;
+        }
+
+    }
+
+    close(newsockfd);
+    close(sockfd);
     return 0;
 }
 
