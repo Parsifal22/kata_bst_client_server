@@ -7,4 +7,6 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
-void error (const char *msg);
+
+///FUNCTIONS///
+void error (const char *);
