@@ -106,3 +106,16 @@ Node* delete_node(int val, Node* t) {
 	    return t;
 	}
 
+
+
+    Node* find(Node* tree, int val){
+        
+        if(tree == NULL)
+	        return NULL;
+	    else if(val < tree->data)
+	        return find(tree->left, val);
+	    else if(val > tree->data)
+	        return find(tree->right, val);
+	    else
+	        return tree;       
+    }

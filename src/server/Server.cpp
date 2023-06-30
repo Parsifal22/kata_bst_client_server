@@ -108,6 +108,28 @@ int main(int argc, char *argv[]){
 
                     break; 
                 }
+                else if (char_stream.find("find") != std::string::npos){
+
+                    if (find(root, buffer[i+1] - '0') == NULL){
+
+                        msg = write(newsockfd, "This number is not tree", strlen("This number is not tree"));
+
+                        if (msg < 0){
+                            error("Error on Writing.");
+                        }
+
+                        break; 
+                    }
+
+                    msg = write(newsockfd, "This number exists", strlen("This number exist"));
+
+                    if (msg < 0){
+                        error("Error on Writing.");
+                    }
+
+                    break; 
+
+                }
                 else {
 
                     msg = write(newsockfd, "Incorrect Command", strlen("Incorrect Command"));
