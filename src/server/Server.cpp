@@ -1,5 +1,5 @@
 #include "../Top_file.h"
-
+#include <string>
 
 int main(int argc, char *argv[]){
 
@@ -51,26 +51,88 @@ int main(int argc, char *argv[]){
 
         bzero(buffer, 255);
         msg = read(newsockfd, buffer, 255);
+
         if (msg < 0){
             error("Error on reading.");
         }
 
-        std::cout << "Client : " << buffer << std::endl;
+        int i = 0;
+        std::string char_stream;
 
-        bzero(buffer, 255);
-        fgets(buffer, 255, stdin);
+        int exit = strncmp("Exit", buffer, 4);
 
-        msg = write(newsockfd, buffer, strlen(buffer));
-
-        if(msg < 0){
-            error("Error on Writing.");
-        }
-
-        int i = strncmp("Bye", buffer, 3);
-
-        if(i == 0){
+        if(exit == 0){
             break;
         }
+
+        while(1){
+
+            if (buffer[i] == '\0'){
+
+                msg = write(newsockfd, "Incorrect Command", strlen("Incorrect Command"));
+
+                if(msg < 0){
+                    error("Error on Writing.");
+                }
+                break;
+            }
+            else if (buffer[i] != ' '){
+
+                char_stream.push_back(buffer[i]);
+
+            }
+            else {
+                
+                std::cout << char_stream << std::endl;
+
+                if (char_stream.find("insert") != std::string::npos){
+
+                    msg = write(newsockfd, "Insert", strlen("Insert"));
+
+                    if (msg < 0){
+                        error("Error on Writing.");
+                    }
+
+                    break;
+                }
+                else if (char_stream.find("delete") != std::string::npos){
+
+                    msg = write(newsockfd, "Delete", strlen("Delete"));
+
+                    if (msg < 0){
+                        error("Error on Writing.");
+                    }
+
+                    break; 
+                }
+                else if (char_stream.find("find") != std::string::npos){
+
+                    msg = write(newsockfd, "Find", strlen("Find"));
+
+                    if (msg < 0){
+                        error("Error on Writing.");
+                    }
+
+                    break; 
+                }
+                else {
+
+                    msg = write(newsockfd, "Incorrect Command", strlen("Incorrect Command"));
+
+                    if (msg < 0){
+                        error("Error on Writing.");
+                    }
+
+                    break; 
+                }
+                        
+
+           }
+
+            i++;
+        }
+
+        
 
     }
 

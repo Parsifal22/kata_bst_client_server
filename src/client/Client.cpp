@@ -38,10 +38,19 @@ int main(int argc, char *argv[]){
         error("Connection Failed");
     }
 
+    std::cout << "Successful Connection to Server" << std::endl;
+
     while(1)
     {
         bzero(buffer, 255);
         fgets(buffer, 255, stdin);
+
+        int i = strncmp("Exit", buffer, 4);
+
+        if(i == 0){
+            break;
+        }
+        
         msg = write(sockfd, buffer, strlen(buffer));
 
         if(msg = 0){
@@ -56,11 +65,7 @@ int main(int argc, char *argv[]){
         }
 
         std::cout << "Server: " << buffer << std::endl;
-        int i = strncmp("Bye", buffer, 3);
 
-        if(i == 0){
-            break;
-        }
 
     }
 

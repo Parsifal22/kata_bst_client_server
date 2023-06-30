@@ -8,6 +8,8 @@
 #include <unistd.h>
 #include <netdb.h>
 
+///MACROS///
+#define BUFFER_SIZE 10
 
 ///FUNCTIONS///
 void error (const char *);
