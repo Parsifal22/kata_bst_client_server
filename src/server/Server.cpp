@@ -47,6 +47,8 @@ int main(int argc, char *argv[]){
         error("Error on Accept");
     }
 
+    Node *root = NULL;
+    
     while(1){
 
         bzero(buffer, 255);
@@ -86,23 +88,13 @@ int main(int argc, char *argv[]){
                 std::cout << char_stream << std::endl;
 
                 if (char_stream.find("insert") != std::string::npos){
-
-                    msg = write(newsockfd, "Insert", strlen("Insert"));
-
-                    if (msg < 0){
-                        error("Error on Writing.");
-                    }
-
+                    root = insert(buffer[i+1] - '0', msg, newsockfd, root);
                     break;
                 }
-                else if (char_stream.find("delete") != std::string::npos){
-
-                    msg = write(newsockfd, "Delete", strlen("Delete"));
-
-                    if (msg < 0){
-                        error("Error on Writing.");
-                    }
-
+                else if (char_stream.find("print") != std::string::npos){
+ 
+                    print_out(msg, newsockfd, root);
+                    
                     break; 
                 }
                 else if (char_stream.find("find") != std::string::npos){
