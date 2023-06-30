@@ -64,3 +64,45 @@ void print_out(int msg, int newsockfd, Node *tree){
         print_out(msg, newsockfd, tree->right);
 
 }
+
+
+
+
+Node* findMin(Node* t)
+	{
+	    if(t == NULL)
+	        return NULL;
+	    else if(t->left == NULL)
+	        return t;
+	    else
+	        return findMin(t->left);
+	}
+
+Node* delete_node(int val, Node* t) {
+
+	    Node* temp;
+	    if(t == NULL)
+	        return NULL;
+	    else if(val < t->data)
+	        t->left = delete_node(val, t->left);
+	    else if(val > t->data)
+	        t->right = delete_node(val, t->right);
+	    else if(t->left && t->right)
+	    {
+	        temp = findMin(t->right);
+	        t->data = temp->data;
+	        t->right = delete_node(t->data, t->right);
+	    }
+	    else
+	    {
+	        temp = t;
+	        if(t->left == NULL)
+	            t = t->right;
+	        else if(t->right == NULL)
+	            t = t->left;
+	        delete temp;
+	    }
+	
+	    return t;
+	}
+

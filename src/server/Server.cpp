@@ -97,9 +97,10 @@ int main(int argc, char *argv[]){
                     
                     break; 
                 }
-                else if (char_stream.find("find") != std::string::npos){
+                else if (char_stream.find("delete") != std::string::npos){
 
-                    msg = write(newsockfd, "Find", strlen("Find"));
+                    root = delete_node(buffer[i+1] - '0', root);
+                    msg = write(newsockfd, "Deleted", strlen("Deleted"));
 
                     if (msg < 0){
                         error("Error on Writing.");
