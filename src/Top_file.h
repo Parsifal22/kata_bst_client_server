@@ -21,13 +21,15 @@ struct Node {
 
 
 ///FUNCTIONS///
-void error (const char *);
+
 Node* insert(int, int, int, Node*);
-void find (int);
-void delete_node (int);
+Node* delete_node (int, Node*);
+Node* find (Node*, int);
+
+void error (const char *);
 void print_out(int, int, Node*);
 
-
+int find_data(int, char []);
 
 
 

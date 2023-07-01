@@ -78,17 +78,24 @@ int main(int argc, char *argv[]){
                 }
                 break;
             }
-            else if (buffer[i] != ' '){
+            else {
 
                 char_stream.push_back(buffer[i]);
 
-            }
-            else {
-                
-                std::cout << char_stream << std::endl;
-
                 if (char_stream.find("insert") != std::string::npos){
-                    root = insert(buffer[i+1] - '0', msg, newsockfd, root);
+                    int data = find_data(i, buffer); 
+
+                    if (data == -1){
+                        msg = write(newsockfd, "Incorrect data", strlen("Incorrect data"));
+
+                        if (msg < 0){
+                            error("Error on Writing.");
+                        }
+                    }  
+                    else{
+                        root = insert(data, msg, newsockfd, root);
+                    }    
+                    
                     break;
                 }
                 else if (char_stream.find("print") != std::string::npos){
@@ -99,49 +106,70 @@ int main(int argc, char *argv[]){
                 }
                 else if (char_stream.find("delete") != std::string::npos){
 
-                    root = delete_node(buffer[i+1] - '0', root);
-                    msg = write(newsockfd, "Deleted", strlen("Deleted"));
+                    int data = find_data(i, buffer); 
 
-                    if (msg < 0){
-                        error("Error on Writing.");
+                    if (data == -1){
+
+                         msg = write(newsockfd, "Incorrect data", strlen("Incorrect data"));
+
+                        if (msg < 0){
+                            error("Error on Writing.");
+                        }
+                    }                        
+                    else{
+
+                        root = delete_node(data, root);
+                        
+                        msg = write(newsockfd, "Deleted", strlen("Deleted"));
+
+                        if (msg < 0){
+                            error("Error on Writing.");
+                        }
                     }
 
                     break; 
                 }
                 else if (char_stream.find("find") != std::string::npos){
+                    
 
-                    if (find(root, buffer[i+1] - '0') == NULL){
+                    int data = find_data(i, buffer); 
 
-                        msg = write(newsockfd, "This number is not tree", strlen("This number is not tree"));
+                    if (data == -1){
+
+                         msg = write(newsockfd, "Incorrect data", strlen("Incorrect data"));
 
                         if (msg < 0){
                             error("Error on Writing.");
                         }
+                    } 
+                    else{
 
-                        break; 
+                        if (find(root, data) == NULL){
+
+                            msg = write(newsockfd, "This number is not tree", strlen("This number is not tree"));
+
+                            if (msg < 0){
+                                error("Error on Writing.");
+                            }
+
+                            
+                        }
+                        else{
+                            
+                            msg = write(newsockfd, "This number exists", strlen("This number exist"));
+
+                            if (msg < 0){
+                                error("Error on Writing.");
+                            }  
+                        }
+                     
                     }
 
-                    msg = write(newsockfd, "This number exists", strlen("This number exist"));
-
-                    if (msg < 0){
-                        error("Error on Writing.");
-                    }
 
                     break; 
 
-                }
-                else {
-
-                    msg = write(newsockfd, "Incorrect Command", strlen("Incorrect Command"));
-
-                    if (msg < 0){
-                        error("Error on Writing.");
-                    }
-
-                    break; 
                 }
                         
-
            }
 
             i++;
@@ -162,4 +190,25 @@ void error(const char *msg)
 
     perror(msg);
     exit(1);
+}
+
+
+int find_data(int i, char data[]){
+
+    std::string data_colector;
+
+    while(data[i] != '\0'){
+        if (isdigit(data[i])){
+            data_colector.push_back(data[i]);
+        }
+        
+        i++;
+    }
+
+    
+    if (!data_colector.empty()){
+        return std::stoi(data_colector);
+    }
+
+    return -1;
 }

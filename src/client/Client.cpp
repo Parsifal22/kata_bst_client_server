@@ -12,7 +12,7 @@ int main(int argc, char *argv[]){
     struct hostent *server;
 
     if (argc < 3){
-        std::cout << stderr << "usage " << argv[0] << "hostname port" << std::endl;
+        std::cout << stderr << " usage " << argv[0] << " hostname port" << std::endl;
         exit(1);
     }
 
