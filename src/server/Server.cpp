@@ -14,7 +14,7 @@ int main(int argc, char *argv[]){
     int newsockfd;
     int portno;
     int msg;
-    char buffer[255];
+    char buffer[BUFFER_SIZE];
 
     struct sockaddr_in serv_addr;
     struct sockaddr_in cli_addr;
@@ -51,17 +51,17 @@ int main(int argc, char *argv[]){
     
     while(1){
 
-        bzero(buffer, 255);
-        msg = read(newsockfd, buffer, 255);
+        bzero(buffer, BUFFER_SIZE);
+        msg = read(newsockfd, buffer, BUFFER_SIZE);
 
         if (msg < 0){
             error("Error on reading.");
         }
-
+        
         int i = 0;
         std::string char_stream;
 
-        int exit = strncmp("Exit", buffer, 4);
+        int exit = strncmp("exit", buffer, 4);
 
         if(exit == 0){
             break;
@@ -70,12 +70,7 @@ int main(int argc, char *argv[]){
         while(1){
 
             if (buffer[i] == '\0'){
-
-                msg = write(newsockfd, "Incorrect Command", strlen("Incorrect Command"));
-
-                if(msg < 0){
-                    error("Error on Writing.");
-                }
+                write("Incorrect Command", newsockfd);
                 break;
             }
             else {
@@ -85,12 +80,8 @@ int main(int argc, char *argv[]){
                 if (char_stream.find("insert") != std::string::npos){
                     int data = find_data(i, buffer); 
 
-                    if (data == -1){
-                        msg = write(newsockfd, "Incorrect data", strlen("Incorrect data"));
-
-                        if (msg < 0){
-                            error("Error on Writing.");
-                        }
+                    if (data == INCORRECT_DATA){
+                        write("Incorrect Data", newsockfd);
                     }  
                     else{
                         root = insert(data, msg, newsockfd, root);
@@ -108,23 +99,15 @@ int main(int argc, char *argv[]){
 
                     int data = find_data(i, buffer); 
 
-                    if (data == -1){
+                    if (data == INCORRECT_DATA){
 
-                         msg = write(newsockfd, "Incorrect data", strlen("Incorrect data"));
-
-                        if (msg < 0){
-                            error("Error on Writing.");
-                        }
+                        write("Incorrect Data", newsockfd);
                     }                        
                     else{
 
                         root = delete_node(data, root);
                         
-                        msg = write(newsockfd, "Deleted", strlen("Deleted"));
-
-                        if (msg < 0){
-                            error("Error on Writing.");
-                        }
+                        write("Deleted", newsockfd);
                     }
 
                     break; 
@@ -134,81 +117,35 @@ int main(int argc, char *argv[]){
 
                     int data = find_data(i, buffer); 
 
-                    if (data == -1){
+                    if (data == INCORRECT_DATA){
 
-                         msg = write(newsockfd, "Incorrect data", strlen("Incorrect data"));
-
-                        if (msg < 0){
-                            error("Error on Writing.");
-                        }
+                        write("Incorrect Data", newsockfd);
                     } 
                     else{
 
                         if (find(root, data) == NULL){
 
-                            msg = write(newsockfd, "This number is not tree", strlen("This number is not tree"));
-
-                            if (msg < 0){
-                                error("Error on Writing.");
-                            }
+                            write("This number is not in the storage", newsockfd);
 
                             
                         }
                         else{
                             
-                            msg = write(newsockfd, "This number exists", strlen("This number exist"));
-
-                            if (msg < 0){
-                                error("Error on Writing.");
-                            }  
+                            write("This number exists", newsockfd);
                         }
                      
                     }
 
-
                     break; 
 
-                }
-                        
+                }             
            }
 
             i++;
         }
-
-        
-
     }
 
     close(newsockfd);
     close(sockfd);
     return 0;
-}
-
-
-void error(const char *msg)
-{
-
-    perror(msg);
-    exit(1);
-}
-
-
-int find_data(int i, char data[]){
-
-    std::string data_colector;
-
-    while(data[i] != '\0'){
-        if (isdigit(data[i])){
-            data_colector.push_back(data[i]);
-        }
-        
-        i++;
-    }
-
-    
-    if (!data_colector.empty()){
-        return std::stoi(data_colector);
-    }
-
-    return -1;
 }

@@ -13,12 +13,7 @@ Node * insert(int val, int msg, int newsockfd, Node * tree){
 
     if (tree == NULL){
 
-        msg = write(newsockfd, "Insert Element", strlen("Insert Element"));
-
-        if (msg < 0){
-                error("Error on Writing.");
-            }
-
+        write("Insert Element", newsockfd);
         return new_node(val);
         }
 
@@ -31,11 +26,7 @@ Node * insert(int val, int msg, int newsockfd, Node * tree){
     }
     
     else {
-        msg = write(newsockfd, "There is the same element", strlen("There is the same element"));
-
-        if (msg < 0){
-                error("Error on Writing.");
-            }
+        write("This number is already in the storage", newsockfd);
     }
 
     return tree;
@@ -51,11 +42,12 @@ void print_out(int msg, int newsockfd, Node *tree){
         }
     
         print_out(msg, newsockfd, tree->left);
+        
         char temp[10 + sizeof(char)];
         std::sprintf(temp, "%d", tree->data);
         
-        msg = write(newsockfd, temp, strlen(temp));
-        msg = write(newsockfd, " ", strlen(" "));
+        write(temp, newsockfd);
+        write(" ", newsockfd);
 
         if (msg < 0){
                 error("Error on Writing.");

@@ -1,1 +1,1 @@
-add_executable(srv Server.cpp BST.cpp)
+add_executable(srv Server.cpp BST.cpp Functions.cpp)

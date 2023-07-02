@@ -11,8 +11,10 @@
 
 
 ///MACROS///
-#define BUFFER_SIZE 10
+#define BUFFER_SIZE 255
+#define INCORRECT_DATA -1
 
+///Node struct///
 struct Node {
         int data;
         Node* left;
@@ -21,13 +23,13 @@ struct Node {
 
 
 ///FUNCTIONS///
-
 Node* insert(int, int, int, Node*);
 Node* delete_node (int, Node*);
 Node* find (Node*, int);
 
 void error (const char *);
 void print_out(int, int, Node*);
+void write(const char *, int);
 
 int find_data(int, char []);
 

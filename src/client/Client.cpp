@@ -6,7 +6,7 @@ int main(int argc, char *argv[]){
     int newsockfd;
     int portno;
     int msg;
-    char buffer[255];
+    char buffer[BUFFER_SIZE];
 
     struct sockaddr_in serv_addr;
     struct hostent *server;
@@ -20,7 +20,7 @@ int main(int argc, char *argv[]){
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
     if (sockfd < 0){
-        error("ERROR opening socket");
+        error("Error, opening socket");
     }
 
     server = gethostbyname(argv[1]);
@@ -42,10 +42,10 @@ int main(int argc, char *argv[]){
 
     while(1)
     {
-        bzero(buffer, 255);
-        fgets(buffer, 255, stdin);
+        bzero(buffer, BUFFER_SIZE);
+        fgets(buffer, BUFFER_SIZE, stdin);
 
-        int i = strncmp("Exit", buffer, 4);
+        int i = strncmp("exit", buffer, 4);
 
         if(i == 0){
             break;
@@ -53,12 +53,13 @@ int main(int argc, char *argv[]){
         
         msg = write(sockfd, buffer, strlen(buffer));
 
-        if(msg = 0){
-            error("Error on writing");
-        }
+        if (msg < 0){
+                error("Error on Writing.");
+            }
 
-        bzero(buffer, 255);
-        msg = read(sockfd, buffer, 255);
+        bzero(buffer, BUFFER_SIZE);
+
+        msg = read(sockfd, buffer, BUFFER_SIZE);
 
         if(msg < 0){
             error("Error on reading.");
