@@ -1,5 +1,9 @@
+/*
+* The code responsible for the server
+* and for processing client commands
+*/
+
 #include "../Top_file.h"
-#include <string>
 
 int main(int argc, char *argv[]){
 
@@ -57,7 +61,7 @@ int main(int argc, char *argv[]){
         if (msg < 0){
             error("Error on reading.");
         }
-        
+
         int i = 0;
         std::string char_stream;
 

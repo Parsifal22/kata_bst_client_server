@@ -1,3 +1,8 @@
+/*
+* The code responsible for connecting the client to the server
+* and sending commands to the server
+*/
+
 #include "../Top_file.h"
 
 int main(int argc, char *argv[]){

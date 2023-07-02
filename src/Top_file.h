@@ -1,3 +1,7 @@
+/*
+* This file contains all information about included libraries and functions
+*/
+
 #include <iostream>
 #include <string.h>
 #include <sys/types.h>
