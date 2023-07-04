@@ -94,8 +94,13 @@ int main(int argc, char *argv[]){
                     break;
                 }
                 else if (char_stream.find("print") != std::string::npos){
- 
-                    print_out(msg, newsockfd, root);
+                    if (root == NULL){
+                        write("BST is empty", newsockfd);
+                    }
+                    else{
+                       print_out(msg, newsockfd, root); 
+                    }
+                    
                     
                     break; 
                 }
@@ -108,10 +113,18 @@ int main(int argc, char *argv[]){
                         write("Incorrect Data", newsockfd);
                     }                        
                     else{
-
-                        root = delete_node(data, root);
+                        if (find(root, data) == NULL){
+                            char temp[10 + sizeof(char)];
+                            std::sprintf(temp, "%d", data);
+		                    char msg [55] = "ERROR: ";
+		                    strcat(msg, temp);
+                            write(strcat(msg, " doesn't exist in BST"), newsockfd);
+                        }
+                        else{
+                            root = delete_node(data, root);
+                            write("Deleted", newsockfd); 
+                        }
                         
-                        write("Deleted", newsockfd);
                     }
 
                     break; 

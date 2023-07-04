@@ -38,7 +38,11 @@ Node * insert(int val, int msg, int newsockfd, Node * tree){
     }
     
     else {
-        write("This number is already in the storage", newsockfd);
+		char temp[10 + sizeof(char)];
+        std::sprintf(temp, "%d", tree->data);
+		char msg [55] = "ERROR: ";
+		strcat(msg, temp);
+        write(strcat(msg, " already exist in BST"), newsockfd);
     }
 
     return tree;
@@ -63,10 +67,6 @@ void print_out(int msg, int newsockfd, Node *tree){
         
         write(temp, newsockfd);
         write(" ", newsockfd);
-
-        if (msg < 0){
-                error("Error on Writing.");
-            }
 
         print_out(msg, newsockfd, tree->right);
 
@@ -115,7 +115,7 @@ Node* delete_node(int val, Node* tree) {
 	            tree = tree->left;
 	        delete temp;
 	    }
-	
+
 	    return tree;
 	}
 
